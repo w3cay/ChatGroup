@@ -1,6 +1,12 @@
 import './index.html';
 import './master.scss';
+import Test from './test.vue';
 
-console.log('hells');
+console.log('hellsdsds');
+console.log('dddsdsdsdsdsdss');
 
-console.log('dddsdsdsdss');
+new Vue({
+  el: '#app',
+  data: {},
+  components: { Test },
+});

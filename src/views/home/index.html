@@ -3,7 +3,12 @@
 {% block styles %}
 <link rel="stylesheet" type="text/css" href="views/home/dist/master.css">
 {% endblock %}
-{% block body %}d打算打dsadsas{% endblock %}
+{% block body %}
+  <div id="app">
+    <test></test>    
+  </div>
+{% endblock %}
 {% block scripts %}
+<script src="http://cdn.bootcss.com/vue/1.0.26/vue.js"></script>
 <script type="text/javascript" src="views/home/dist/master.js"></script>
 {% endblock %}

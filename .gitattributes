@@ -1,1 +1,1 @@
-src/**/dist/* diff=nodiff
+src/views/**/dist/* diff=nodiff

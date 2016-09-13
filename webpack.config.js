@@ -8,8 +8,10 @@ var hotMiddlewareScript = 'webpack-hot-middleware/client?reload=true';
 var BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 var cssLoader =  ExtractTextPlugin.extract('style', 'css');
 var sassLoader = ExtractTextPlugin.extract('style', 'css!postcss!sass');
+var baseDir = path.join(__dirname);
 var paths = {
     src: './src/',
+    dist: './dist',
 };
 
 module.exports = {
