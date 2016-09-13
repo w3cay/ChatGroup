@@ -1,27 +1,25 @@
 var vue = require('vue-loader');
 var webpack = require('webpack');
 var path = require('path');
+var publicPath = 'http://localhost:3000/';
+var hotMiddlewareScript = 'webpack-hot-middleware/client?reload=true';
 
 var paths = {
-    src: './resources/src/',
-    dist: './resources/dist/'
+    src: './src/',
 };
 
 module.exports = {
-    entry: {
-        'fileList': paths.src + 'business/fileList/app.js',
-        'uploadFile': paths.src + 'business/uploadFile/app.js'
-        // 'interface': paths.src + 'javascripts/interface.js'
-    },
+    devtool: 'source-map',
+    entry:{ 'master': [paths.src + 'views/home/master.js' ,hotMiddlewareScript] },
     output: {
-        path: paths.dist + 'business',
-        publicPath: paths.dist + 'business',
-        filename: '[name].js'
+        path: paths.src + 'views/home/dist',
+        publicPath: publicPath,
+        filename: '[name].js',
     },
     resolve: {
         extensions: ['', '.js', '.vue', '.styl'],
         alias: {
-              'src': path.resolve(__dirname, './resources')
+              'src': path.resolve(__dirname, './src')
         }
       },
       resolveLoader: {
@@ -46,20 +44,17 @@ module.exports = {
                 name: '[name].[ext]?[hash]'
             }
         }, {
-            test: /\.styl$/,
-            loader: 'style-loader!css-loader!stylus-loader'
+            test: /\.scss$/,
+            loader: 'style!css?sourceMap!resolve-url!sass?sourceMap'
         }]
     },
     babel: {
         presets: ['es2015'],
         plugins: ['transform-runtime']
     },
-    // 如果要全部都用jQuery，就用插件的方法加载jQuery，代码在下面👇
-    // plugins: [
- //        new webpack.ProvidePlugin({
- //            $: "jquery",
- //            jQuery: "jquery",
- //            "window.jQuery": "jquery"
- //        })
- //    ]
+    plugins: [
+        new webpack.optimize.OccurenceOrderPlugin(),
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.NoErrorsPlugin()
+    ]
 };
