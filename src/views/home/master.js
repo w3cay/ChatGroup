@@ -1,3 +1,6 @@
+import './index.html';
 import './master.scss';
 
-console.log('hello');
+console.log('hells');
+
+console.log('dddsdsdsdss');

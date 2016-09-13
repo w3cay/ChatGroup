@@ -10,17 +10,31 @@ var users = require('./routes/users');
 var webpack = require('webpack'),
     webpackDevMiddleware = require('webpack-dev-middleware'),
     webpackHotMiddleware = require('webpack-hot-middleware'),
+    webpackDevServer = require('webpack-dev-server'),
     webpackDevConfig = require('./webpack.config.js');
 var compiler = webpack(webpackDevConfig);
 
 var app = express();
+// attach to the compiler & the server
+// app.use(webpackDevMiddleware(compiler, {
+//     // public path should be the same with webpack config
+//     publicPath: webpackDevConfig.output.publicPath,
+//     noInfo: true,
+//     stats: {
+//       colors: true
+//     }
+// }));
+// app.use(webpackHotMiddleware(compiler));
 
-console.log(app.get('env'));
+// console.log(app.get('env'));
 // view engine setup
 app.set('views', path.join(__dirname, 'src/views'));
 app.engine('html', swig.renderFile);
 app.set('view engine', 'html');
-
+var swig = require('swig');
+swig.setDefaults({
+    cache: false,
+});
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
@@ -29,17 +43,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'src')));
 
-// attach to the compiler & the server
-// app.use(webpackDevMiddleware(compiler, {
 
-//     // public path should be the same with webpack config
-//     publicPath: webpackDevConfig.output.publicPath,
-//     noInfo: true,
-//     stats: {
-//         colors: true
-//     }
-// }));
-// app.use(webpackHotMiddleware(compiler));
 
 app.use('/', routes);
 app.use('/users', users);

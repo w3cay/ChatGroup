@@ -8,6 +8,7 @@ var app = require('../app');
 var debug = require('debug')('ChatGroup:server');
 var http = require('http');
 
+// var bs = require('browser-sync').create();
 /**
  * Get port from environment and store in Express.
  */

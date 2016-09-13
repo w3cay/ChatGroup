@@ -1,19 +1,23 @@
 var vue = require('vue-loader');
 var webpack = require('webpack');
 var path = require('path');
+var DEBUG = process.env.NODE_ENV !== 'production';
 var publicPath = 'http://localhost:3000/';
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var hotMiddlewareScript = 'webpack-hot-middleware/client?reload=true';
-
+var BrowserSyncPlugin = require('browser-sync-webpack-plugin');
+var cssLoader =  ExtractTextPlugin.extract('style', 'css');
+var sassLoader = ExtractTextPlugin.extract('style', 'css!postcss!sass');
 var paths = {
     src: './src/',
 };
 
 module.exports = {
     devtool: 'source-map',
-    entry:{ 'master': [paths.src + 'views/home/master.js' ,hotMiddlewareScript] },
+    entry:{ 'master': paths.src + 'views/home/master.js' },
     output: {
         path: paths.src + 'views/home/dist',
-        publicPath: publicPath,
+        publicPath: publicPath + paths.src + 'views/home/dist',
         filename: '[name].js',
     },
     resolve: {
@@ -45,7 +49,15 @@ module.exports = {
             }
         }, {
             test: /\.scss$/,
-            loader: 'style!css?sourceMap!resolve-url!sass?sourceMap'
+            loader: sassLoader,
+        },
+        {
+            test: /\.css$/,
+            loader:  cssLoader,
+        },
+        {
+           test: /\.html$/,
+           loader: "raw-loader"
         }]
     },
     babel: {
@@ -54,7 +66,26 @@ module.exports = {
     },
     plugins: [
         new webpack.optimize.OccurenceOrderPlugin(),
-        new webpack.HotModuleReplacementPlugin(),
-        new webpack.NoErrorsPlugin()
+        // new webpack.HotModuleReplacementPlugin(),
+        new webpack.NoErrorsPlugin(),
+        new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                warnings: false
+            }
+        }),
+        new ExtractTextPlugin('[name].css'), 
+        new BrowserSyncPlugin({
+             // browse to http://localhost:3000/ during development,
+             // ./public directory is being served
+             host: 'localhost',
+             port: 2333,
+             proxy: 'http://localhost:3000/'
+           },      // plugin options
+          {
+            // prevent BrowserSync from reloading the page
+            // and let Webpack Dev Server take care of this
+            reload: true
+          }
+       )
     ]
 };
