@@ -1,27 +1,31 @@
 var vue = require('vue-loader');
 var webpack = require('webpack');
 var path = require('path');
-
+var DEBUG = process.env.NODE_ENV !== 'production';
+var publicPath = 'http://localhost:3000/';
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var hotMiddlewareScript = 'webpack-hot-middleware/client?reload=true';
+var BrowserSyncPlugin = require('browser-sync-webpack-plugin');
+var cssLoader =  ExtractTextPlugin.extract('style', 'css');
+var sassLoader = ExtractTextPlugin.extract('style', 'css!postcss!sass');
+var baseDir = path.join(__dirname);
 var paths = {
-    src: './resources/src/',
-    dist: './resources/dist/'
+    src: './src/',
+    dist: './dist',
 };
 
 module.exports = {
-    entry: {
-        'fileList': paths.src + 'business/fileList/app.js',
-        'uploadFile': paths.src + 'business/uploadFile/app.js'
-        // 'interface': paths.src + 'javascripts/interface.js'
-    },
+    devtool: 'source-map',
+    entry:{ 'master': paths.src + 'views/home/master.js' },
     output: {
-        path: paths.dist + 'business',
-        publicPath: paths.dist + 'business',
-        filename: '[name].js'
+        path: paths.src + 'views/home/dist',
+        publicPath: publicPath + paths.src + 'views/home/dist',
+        filename: '[name].js',
     },
     resolve: {
         extensions: ['', '.js', '.vue', '.styl'],
         alias: {
-              'src': path.resolve(__dirname, './resources')
+              'src': path.resolve(__dirname, './src')
         }
       },
       resolveLoader: {
@@ -46,20 +50,47 @@ module.exports = {
                 name: '[name].[ext]?[hash]'
             }
         }, {
-            test: /\.styl$/,
-            loader: 'style-loader!css-loader!stylus-loader'
+            test: /\.scss$/,
+            loader: sassLoader,
+        },
+        {
+            test: /\.css$/,
+            loader:  cssLoader,
+        },
+        {
+           test: /\.html$/,
+           loader: "raw-loader"
         }]
     },
     babel: {
         presets: ['es2015'],
         plugins: ['transform-runtime']
     },
-    // 如果要全部都用jQuery，就用插件的方法加载jQuery，代码在下面👇
-    // plugins: [
- //        new webpack.ProvidePlugin({
- //            $: "jquery",
- //            jQuery: "jquery",
- //            "window.jQuery": "jquery"
- //        })
- //    ]
+    externals: {
+        VueStrap: 'VueStrap',
+    },
+    plugins: [
+        new webpack.optimize.OccurenceOrderPlugin(),
+        // new webpack.HotModuleReplacementPlugin(),
+        new webpack.NoErrorsPlugin(),
+        new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                warnings: false
+            }
+        }),
+        new ExtractTextPlugin('[name].css'), 
+        new BrowserSyncPlugin({
+             // browse to http://localhost:3000/ during development,
+             // ./public directory is being served
+             host: 'localhost',
+             port: 2333,
+             proxy: 'http://localhost:3000/'
+           },      // plugin options
+          {
+            // prevent BrowserSync from reloading the page
+            // and let Webpack Dev Server take care of this
+            reload: true
+          }
+       )
+    ]
 };

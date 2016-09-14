@@ -1,0 +1,31 @@
+{% extends '../public/layout.html' %}
+{% block title %}{{title}}{% endblock %}
+{% block styles %}
+<link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="views/home/dist/master.css">
+{% endblock %}
+{% block body %}
+{% raw %}
+  <div id="app" v-cloak>
+    <h3 class="center title">{{title}}</h3>
+    <div class="container">
+      <div class="chat-room">
+        <div v-for="item in timeline">
+          <div class="item" id="mes-{{$index + 1}}"> 
+            <div>{{item.name }} {{item.time}}</div>
+            <div>{{item.text}}</div>
+          </div>
+        </div >
+      </div>
+      <div class="chat-input">
+        <textarea class="form-control" v-model="wordsValue" @keyup.enter="sendMessage"></textarea>
+      </div>
+    </div>
+  </div>
+{% endraw %}
+{% endblock %}
+{% block scripts %}
+<script src="http://cdn.bootcss.com/vue/1.0.26/vue.js"></script>
+<script src="http://cdn.bootcss.com/vue-strap/1.1.15/vue-strap.js"></script>
+<script type="text/javascript" src="views/home/dist/master.js"></script>
+{% endblock %}
