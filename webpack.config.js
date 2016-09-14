@@ -66,6 +66,9 @@ module.exports = {
         presets: ['es2015'],
         plugins: ['transform-runtime']
     },
+    externals: {
+        VueStrap: 'VueStrap',
+    },
     plugins: [
         new webpack.optimize.OccurenceOrderPlugin(),
         // new webpack.HotModuleReplacementPlugin(),

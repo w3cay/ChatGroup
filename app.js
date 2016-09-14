@@ -78,9 +78,6 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
-
-
 app.locals.title = "ChatGroup";
-app.locals.VIEWS_ROOT = 'src/views';
 
 module.exports = app;
