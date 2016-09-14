@@ -18,6 +18,11 @@ body {
   height: 100%;
   background: rgba(0, 0, 0, .3);
 }
+
+div#app {
+  height: 70%;
+}
+
 .center {
   text-align: center;
 }
@@ -31,12 +36,14 @@ body {
 .container {
   background: #fff;
   border-radius: 5px;
-  width: 900px;
+  width: 95%;
+  max-width: 900px;
+  height: 100%;
   padding: 10px; 
   .chat-room {
     overflow-y: scroll;
     border: 2px solid #f0f0f0;
-    height: 600px;
+    height: 84%;
     margin-bottom: 20px;
     padding: 10px 0 50px;
     .item {
