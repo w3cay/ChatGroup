@@ -3,7 +3,6 @@
 import Moment from 'moment';
 import './index.html';
 import './master.scss';
-import { Const } from '../../utils/config.js';
 
 const VueStrap = window.VueStrap;
 // Set ES6 template string style delimiters.
@@ -12,7 +11,7 @@ const VueStrap = window.VueStrap;
 new Vue({
   el: '#app',
   data: {
-    title: Const.title,
+    title: 'ChatGroup',
     test: 'test',
     wordsValue: '',
     timeline: [

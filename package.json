@@ -12,6 +12,7 @@
     "mongodb": "^2.2.9",
     "mongoose": "^4.6.0",
     "reload": "^1.0.1",
+    "socket.io": "^1.4.8",
     "vue": "^1.0.26",
     "vue-strap": "^1.1.18"
   },
