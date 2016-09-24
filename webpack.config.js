@@ -68,6 +68,7 @@ module.exports = {
     },
     externals: {
         VueStrap: 'VueStrap',
+        io: 'io',
     },
     plugins: [
         new webpack.optimize.OccurenceOrderPlugin(),
@@ -79,18 +80,18 @@ module.exports = {
             }
         }),
         new ExtractTextPlugin('[name].css'), 
-       //  new BrowserSyncPlugin({
-       //       // browse to http://localhost:3000/ during development,
-       //       // ./public directory is being served
-       //       host: 'localhost',
-       //       port: 2333,
-       //       proxy: 'http://localhost:3000/'
-       //     },      // plugin options
-       //    {
-       //      // prevent BrowserSync from reloading the page
-       //      // and let Webpack Dev Server take care of this
-       //      reload: true
-       //    }
-       // )
+        new BrowserSyncPlugin({
+             // browse to http://localhost:3000/ during development,
+             // ./public directory is being served
+             host: 'localhost',
+             port: 2333,
+             proxy: 'http://localhost:8080/'
+           },      // plugin options
+          {
+            // prevent BrowserSync from reloading the page
+            // and let Webpack Dev Server take care of this
+            reload: true
+          }
+       )
     ]
 };

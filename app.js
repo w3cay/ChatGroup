@@ -5,6 +5,7 @@ var config = require('./config.js');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
+var address = require('address');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var swig = require('swig');
@@ -19,11 +20,11 @@ var webpack = require('webpack'),
 var compiler = webpack(webpackDevConfig);
 
 var app = express();
-
+var port = '8080';
 // var io = require('socket.io')(server);
 
 var ioserver = require('http').Server(app);
-ioserver.listen(8080);
+ioserver.listen(port);
 var io = require('socket.io')(ioserver);
 // attach to the compiler & the server
 // app.use(webpackDevMiddleware(compiler, {
@@ -107,9 +108,9 @@ connect()
 
 
 io.on('connection', function (socket) {
-  socket.emit('news', { hello: 'world' });
-  socket.on('my other event', function (data) {
-    console.log(data);
+  socket.emit('user connected');
+  socket.on('send message', function (data) {
+     socket.broadcast.emit('new message' , data);
   });
 });
 
