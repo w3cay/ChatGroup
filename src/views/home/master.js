@@ -1,48 +1,25 @@
 /* jslint browser:true */
 /* global window */
+import Vue from 'vue';
+import VueRouter from 'vue-router';
 
-import Moment from 'moment';
-import ioClient from 'socket.io-client';
-// import App from '../../../app.js';
 import './index.html';
 import './master.scss';
+import App from './App.vue';
+import UserAccountView from './UserAccountView.vue';
+import ChatMainView from './ChatMainView.vue';
 
-const socket = ioClient('192.168.8.109:8080');
+Vue.use(VueRouter);
 
-const VueStrap = window.VueStrap;
-// init root Vue instants
-new Vue({
-  el: '#app',
-  data: {
-    title: 'ChatGroup',
-    test: 'test',
-    wordsValue: '',
-    timeline: [
-    ],
+const router = new VueRouter();
+
+router.map({
+  '/': {
+    component: ChatMainView,
   },
-  created() {
-    socket.on('new message', (data) => {
-      this.timeline.push(data);
-    });
-  },
-  methods: {
-    sendMessage() {
-      if (this.wordsValue !== '') {
-        const mes = {
-          name: 'Bright',
-          text: this.wordsValue,
-          time: Moment().format('Y-MM-DD HH:mm:ss'),
-        };
-        socket.emit('send message', mes);
-        this.timeline.push(mes);
-        this.wordsValue = '';
-        setTimeout(() => {
-          window.location.href = `#mes-${this.timeline.length}`;
-        }, 0);
-      }
-    },
-  },
-  components: {
-    bsInput: VueStrap.input,
+  '/user/account': {
+    component: UserAccountView,
   },
 });
+
+router.start(App, '#app');
