@@ -7,12 +7,12 @@
        
      </div>
      <div class="chat-room">
-     <div class="mes-list">
+     <div class="mes-list" id="mes-list-box">
        <div v-for="item in timeline" class="mes-item">
          <div class="left">
            <img class="avatar" src="http://oe3o9orp4.bkt.clouddn.com/avatar.jpg">
          </div>
-         <div class="right" id="mes-{{$index + 1}}">
+         <div class="right">
            <div><span class="nickname">{{item.name }}</span> <span class="time">{{item.time}}</span></div>
            <div class="mes-content">{{item.text}}</div>
          </div>
@@ -102,6 +102,7 @@
           height: calc(100% - 100px);
           width: 100%;
           overflow-y: scroll;
+          padding-bottom: 50px;
         }
 
         .chat-input {
@@ -158,6 +159,7 @@ import VueStrap from 'vue-strap';
 import Moment from 'moment';
 import ioClient from 'socket.io-client';
 const socket = ioClient('localhost:8080');
+
 export default {
   data () {
     return {
@@ -186,11 +188,13 @@ export default {
           text: this.wordsValue,
           time: Moment().format('Y年MM月DD日 HH:mm'),
         };
+        
         socket.emit('send message', mes);
         this.timeline.push(mes);
         this.wordsValue = '';
         setTimeout(() => {
-          window.location.href = `#mes-${this.timeline.length}`;
+          const mesListBox = document.querySelector('#mes-list-box');
+          mesListBox.scrollTop = mesListBox.scrollHeight;
         }, 0);
       }
     },

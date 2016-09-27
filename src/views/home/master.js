@@ -6,7 +6,7 @@ import VueRouter from 'vue-router';
 import './index.html';
 import './master.scss';
 import App from './App.vue';
-import UserAccountView from './UserAccountView.vue';
+import UserPortalView from './UserPortalView.vue';
 import ChatMainView from './ChatMainView.vue';
 
 Vue.use(VueRouter);
@@ -17,8 +17,8 @@ router.map({
   '/': {
     component: ChatMainView,
   },
-  '/user/account': {
-    component: UserAccountView,
+  '/user/portal': {
+    component: UserPortalView,
   },
 });
 
