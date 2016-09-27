@@ -1,12 +1,19 @@
 <template> 
 <div class="portal-container" >
   <h1>ChatGroup</h1>
-  <div class="form-box form-group" v-if="hasAccount"  transition="slideright">
-    <input class="form-control" type="text" name="" placeholder="手机号">
-    <input class="form-control" type="password" name="" placeholder="密码">
-    <button class="btn btn-primary">登录</button>
-    <a class="signup" href="javascript:void(0);" @click="changeAction">没有账号？注册一个</a>
-  </div>
+
+    <div class="form-box form-group" v-if="hasAccount" transition="slideright">
+      <validator name="loginForm">
+      
+      <input class="form-control" type="text" name="" placeholder="手机号" v-model="loginForm.mobile" v-validate:loginForm.mobile="['required']">
+
+      <input class="form-control" type="password" name="" placeholder="密码" v-model="loginForm.password" v-validate:loginForm.password="['required']">
+      <button class="btn btn-primary">登录</button>
+      <a class="signup" href="javascript:void(0);" @click="changeAction">没有账号？注册一个</a>
+      {{$loginForm.valid}}
+      </validator>
+    </div>
+
   <div class="form-box form-group" v-else transition="slideleft">
     <input class="form-control" type="text" name="" placeholder="手机号">
     <input class="form-control" type="text" name="" placeholder="昵称">
@@ -82,11 +89,22 @@
 
 </style>
 <script>
+import Vue from 'vue';
 import VueStrap from 'vue-strap';
+
 export default {
   data () {
     return {
-      title: 'ChatGroup',
+      loginForm:{
+        mobile: '',
+        password: '',
+      },
+      signForm: {
+        mobile: '',
+        nickname: '',
+        passwordA: '',
+        passwordB: '',
+      },
       // type 1：登录 2：注册
       hasAccount: true,
     }
@@ -94,6 +112,12 @@ export default {
   methods: {
     changeAction() {
       this.hasAccount = this.hasAccount ? false : true;
+    },
+    signUpSubmit() {
+      //
+    },
+    loginAction() {
+      //
     },
   },
   component: {},
