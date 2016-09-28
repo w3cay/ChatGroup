@@ -3,11 +3,12 @@
   "version": "0.0.1",
   "description": "my first socket.io app",
   "scripts": {
-    "start": "DEBUG=ChatGroup:* cross-env NODE_ENV=dev nodemon -i src ./bin/www",
+    "start": "DEBUG=ChatGroup:* cross-env NODE_ENV=dev nodemon --debug -i src ./bin/www",
     "test": "webpack --watch"
   },
   "dependencies": {
     "express": "^4.10.2",
+    "express-session": "^1.14.1",
     "moment": "^2.15.0",
     "mongodb": "^2.2.9",
     "mongoose": "^4.6.0",
@@ -16,6 +17,7 @@
     "socket.io": "^1.4.8",
     "socket.io-client": "^1.4.8",
     "vue": "^1.0.27",
+    "vue-resource": "^1.0.3",
     "vue-router": "^0.7.13",
     "vue-strap": "^1.1.18",
     "vue-validator": "^2.1.7"

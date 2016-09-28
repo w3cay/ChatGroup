@@ -23,6 +23,14 @@ router.post('/', function (req, res) {
     userController.create(req, res);
 });
 
+
+/*
+ * POST
+ */
+router.post('/login', function (req, res) {
+    userController.login(req, res);
+});
+
 /*
  * PUT
  */

@@ -1,8 +1,8 @@
 <template> 
 <div class="portal-container" >
   <h1>ChatGroup</h1>
-
-    <div class="form-box form-group" v-if="hasAccount" transition="slideright">
+<!-- 登录模块 -->
+    <div class="form-box form-group" v-if="$route.query.action == 'login'" transition="slideright">
       <validator name="loginForm" @touched="hasLoginTouched = true">
       <div class="input-box">
         <input class="form-control" type="text" name="" placeholder="手机号" v-model="loginForm.mobile" v-validate:mobile="{ minlength: 11, maxlength: 11 }">
@@ -15,14 +15,18 @@
         <span v-show="$loginForm.password.minlength && hasLoginTouched" class="glyphicon glyphicon-remove"></span>
       </div>
 
-      <button class="btn btn-primary"  @click="hasLoginTouched = true">登录</button>
+      <button class="btn btn-primary"  @click="loginSubmit">登录</button>
+      <div class="error-container">
+        <div v-if="loginErrorMessage" class="login-error alert alert-warning" role="alert">{{loginErrorMessage}}</div>
+      </div>
 
       <a class="signup" href="javascript:void(0);" @click="changeAction">没有账号？注册一个</a>
 
       </validator>
     </div>
 
-  <div class="form-box form-group" v-else transition="slideleft">
+<!-- 注册模块 -->
+  <div class="form-box form-group" v-if="$route.query.action == 'signup'" transition="slideleft">
     <validator name="signForm" >
     
     <div class="input-box">
@@ -31,8 +35,8 @@
       <span v-show="$signForm.mobile.maxlength && hasSignTouched" class="glyphicon glyphicon-remove"></span>
     </div>
     <div class="input-box">
-      <input class="form-control" type="text" name="" placeholder="昵称" v-model="signForm.nickname" v-validate:nickname="['required']">
-      <span v-show="$signForm.nickname.required && hasSignTouched" class="glyphicon glyphicon-remove"></span>
+      <input class="form-control" type="text" name="" placeholder="昵称" v-model="signForm.username" v-validate:username="['required']">
+      <span v-show="$signForm.username.required && hasSignTouched" class="glyphicon glyphicon-remove"></span>
     </div>
     <div class="input-box">
       <input class="form-control" type="password" name="" placeholder="密码" v-model="signForm.passwordA" v-validate:passworda="{ minlength: 6 }">
@@ -42,7 +46,10 @@
       <input class="form-control" type="password" name="" placeholder="确认密码" v-model="signForm.passwordB">
       <span v-show="signForm.passwordB !== signForm.passwordA  && hasSignTouched" class="glyphicon glyphicon-remove"></span>
     </div>  
-      <button class="btn btn-primary" @click="hasSignTouched = true">注册</button>
+      <button class="btn btn-primary"  @click="signUpSubmit">注册</button>
+      <div class="error-container">
+        <div v-if="signErrorMessage" class="login-error alert alert-warning" role="alert">{{signErrorMessage}}</div>
+      </div>
       <a class="signup" href="javascript:void(0);" @click="changeAction">已有账号，去登陆</a>
     </validator>
   </div>
@@ -62,25 +69,51 @@ export default {
       },
       signForm: {
         mobile: '',
-        nickname: '',
+        username: '',
         passwordA: '',
         passwordB: '',
       },
       hasLoginTouched: false,
       hasSignTouched: false,
-      // type 1：登录 2：注册
-      hasAccount: true,
+      loginErrorMessage : '',
+      signErrorMessage : '',
     }
   },
   methods: {
-    changeAction() {
-      this.hasAccount = this.hasAccount ? false : true;
+    changeAction () {
+      const goAction 
+      = this.$route.query.action == 'login' ? 'signup' : 'login';
+      this.$router.go({ name: 'portal', query: {action: goAction}});
     },
     signUpSubmit() {
-      //
+      this.hasSignTouched = true;
+      if (this.$signForm.valid) {
+        this.$http.post('/users',{
+          username: this.signForm.username,
+          mobile: this.signForm.mobile,
+          password: this.signForm.passwordB,
+        }).then((res) => {
+          console.log(res);
+        });
+      }
     },
-    loginAction() {
-      //
+    loginSubmit() {
+      this.hasLoginTouched = true;
+      if (this.$loginForm.valid) {
+        this.$http.post('/users/login',{
+          mobile: this.loginForm.mobile,
+          password: this.loginForm.password,
+        }).then((res) => {
+          console.log(res);
+          if (res.status === 200) {
+            this.$router.go({ path: '/' });
+          } else {
+            this.loginErrorMessage = res.body.message;
+          }
+        },(err) => {
+          this.loginErrorMessage = err.body.message;
+        });
+      }
     },
   },
   component: {},
@@ -102,7 +135,6 @@ export default {
     }
 
     a {
-      margin-top: 30px;
       display: inline-block;
     }
 
@@ -166,6 +198,16 @@ export default {
 
   .input-box {
     position: relative;
+  }
+
+  .login-error.alert.alert-warning {
+    margin: 10px;
+    padding: 5px;
+  }
+
+  .error-container {
+    height: 65px;
+    border: 1px solid #fff;
   }
 
 </style>

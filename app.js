@@ -9,6 +9,7 @@ var address = require('address');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var swig = require('swig');
+var session = require('express-session')
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var cars = require('./routes/cars');
@@ -54,7 +55,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'src')));
 
-
+app.set('trust proxy', 1);
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true }
+}));
 
 app.use('/', routes);
 app.use('/users', users);
@@ -93,6 +100,9 @@ app.use(function(err, req, res, next) {
 app.locals.title = "ChatGroup";
 
 function connect () {
+  // Mongoose: mpromise (mongoose's default promise library) is deprecated, plug in your own promise 
+   // library instead: http://mongoosejs.com/docs/promises.html
+  mongoose.Promise = global.Promise;
   var options = { server: { socketOptions: { keepAlive: 1 } } };
   return mongoose.connect(config.db, options).connection;
 }

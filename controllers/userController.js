@@ -1,3 +1,4 @@
+var crypto = require('crypto');
 var userModel = require('../models/userModel.js');
 
 /**
@@ -47,6 +48,7 @@ module.exports = {
      * userController.create()
      */
     create: function (req, res) {
+
         var user = new userModel({
 			uuid : req.body.uuid,
 			username : req.body.username,
@@ -61,18 +63,30 @@ module.exports = {
 			longitude : req.body.longitude,
 			createdAt : req.body.createdAt,
 			updatedAt : req.body.updatedAt,
-			password : req.body.password
+			password : req.body.password,
+            salt : '',
         });
-        console.log('create user');
-        // user.save(function (err, user) {
-        //     if (err) {
-        //         return res.status(500).json({
-        //             message: 'Error when creating user',
-        //             error: err
-        //         });
-        //     }
-        //     return res.status(201).json(user);
-        // });
+        // 创建salt
+        crypto.randomBytes(32, function (err, salt) {
+            if (err) { throw err;}
+            user.salt = salt.toString('hex');
+        
+        // 加密密码
+            crypto.pbkdf2(user.password, user.salt, 4096, 64, function (err,hash) {
+                if (err) { throw err; }
+                hash = hash.toString('hex');
+                user.password = hash;
+                user.save(function (err, user) {
+                    if (err) {
+                        return res.status(500).json({
+                            message: 'Error when creating user',
+                            error: err
+                        });
+                    }
+                    return res.status(201).json(user);
+                });
+            })
+        })
     },
 
     /**
@@ -135,5 +149,50 @@ module.exports = {
             }
             return res.status(204).json();
         });
-    }
+    },
+
+    /**
+     * userController.login()
+     */
+    login: function(req, res) {
+
+        var reqUser = new userModel({
+            mobile : req.body.mobile,
+            password: req.body.password,
+        });
+        userModel.findOne({mobile: reqUser.mobile }, function (err, user) {
+            if (err) {
+                return res.status(500).json({
+                    message: '(⊙o⊙)出现异常',
+                    error: err
+                });
+            }
+            if (!user) {
+                return res.status(404).json({
+                    message: '(⊙o⊙)该手机号码未注册'
+                });
+            }
+
+            crypto.pbkdf2(reqUser.password, user.salt, 4096, 64, function (err,hash) {
+                if (err) { throw err; }
+                hash = hash.toString('hex');
+                if( hash === user.password ) {
+                    req.session.user = user;
+                    req.session.save(function(err) {
+                      console.log('save');
+                    })
+                    return res.status(200).json({
+                        message: '登录成功'
+                    });
+                } else{
+                    return res.status(401).json({
+                        message: '(⊙o⊙)密码错误'
+                    });
+                }
+
+            })
+            
+           
+         });
+    },
 };
