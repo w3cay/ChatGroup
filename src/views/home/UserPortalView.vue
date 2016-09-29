@@ -79,6 +79,11 @@ export default {
       signErrorMessage : '',
     }
   },
+  created() {
+    if (window.global.userId) {
+      this.$router.go({ name: 'chatMain'});
+    }
+  },
   methods: {
     changeAction () {
       const goAction 
@@ -93,7 +98,9 @@ export default {
           mobile: this.signForm.mobile,
           password: this.signForm.passwordB,
         }).then((res) => {
-          console.log(res);
+          if (res.status === 200) {
+            this.$router.go({ name: 'portal', query: {action: 'login'}});
+          }
         });
       }
     },
@@ -106,6 +113,7 @@ export default {
         }).then((res) => {
           console.log(res);
           if (res.status === 200) {
+            window.global.userId =  res.body.userId;
             this.$router.go({ path: '/' });
           } else {
             this.loginErrorMessage = res.body.message;

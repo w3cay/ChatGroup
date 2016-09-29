@@ -10,5 +10,10 @@
 {% endraw %}
 {% endblock %}
 {% block scripts %}
+<script type="text/javascript">
+    window.global = {
+      userId: '{{userId}}',
+    };
+</script>
 <script type="text/javascript" src="views/home/dist/master.js"></script>
 {% endblock %}

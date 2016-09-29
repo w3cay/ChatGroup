@@ -1,10 +1,14 @@
 var express = require('express');
 var router = express.Router();
+var authCheck = require('../service/authCheck');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  console.log(req.session);
-  res.render('home/index');
+	var data = {
+		userId: req.session.userid,
+	};
+	console.log(data)
+	res.render('home/index', data);
 });
 
 module.exports = router;

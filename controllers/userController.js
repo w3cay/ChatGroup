@@ -40,7 +40,12 @@ module.exports = {
                     message: 'No such user'
                 });
             }
-            return res.json(user);
+            var resUser = {
+                _id: user._id,
+                mobile: user.mobile,
+                username: user.username,
+            };
+            return res.json(resUser);
         });
     },
 
@@ -83,7 +88,7 @@ module.exports = {
                             error: err
                         });
                     }
-                    return res.status(201).json(user);
+                    return res.status(200).json(user);
                 });
             })
         })
@@ -177,16 +182,13 @@ module.exports = {
                 if (err) { throw err; }
                 hash = hash.toString('hex');
                 if( hash === user.password ) {
-                    req.session.user = user;
-                    req.session.save(function(err) {
-                      console.log('save');
-                    })
-                    return res.status(200).json({
-                        message: '登录成功'
-                    });
+                  req.session.userid = user._id;
+                  return res.status(200).json({
+                    userId:  user._id,
+                  });
                 } else{
                     return res.status(401).json({
-                        message: '(⊙o⊙)密码错误'
+                      message: '(⊙o⊙)密码错误'
                     });
                 }
 

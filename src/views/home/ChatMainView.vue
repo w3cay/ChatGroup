@@ -1,5 +1,5 @@
 <template>
-   <div class="chat-box">
+   <div class="chat-box" v-cloak>
     <div class="nav">
     </div>
     <div class="main">
@@ -157,8 +157,9 @@
 <script>
 import VueStrap from 'vue-strap';
 import Moment from 'moment';
+import Cookies from 'js-cookie';
 import ioClient from 'socket.io-client';
-const socket = ioClient('localhost:8080');
+const socket = ioClient('192.168.1.200:8080');
 
 export default {
   data () {
@@ -166,6 +167,7 @@ export default {
       title: 'ChatGroup',
       test: 'test',
       wordsValue: '',
+      user: '',
       timeline: [
         {
           name: 'Bright',
@@ -180,11 +182,27 @@ export default {
       this.timeline.push(data);
     });
   },
+  route: {
+    data: function (transition) {
+      if (!window.global.userId) {
+        this.$router.go({ name: 'portal', query: {action: 'login'}});
+      } else {
+        if (this.user === '') {
+          this.$http.get(`/users/${window.global.userId}`).then((res) => {
+            if (res.status === 200) {
+              console.log(res.body);
+              transition.next({user: res.body});
+            }
+          });  
+        }
+      }
+    },
+  },
   methods: {
     sendMessage() {
       if (this.wordsValue !== '') {
         const mes = {
-          name: 'Bright',
+          name: this.user.username,
           text: this.wordsValue,
           time: Moment().format('Y年MM月DD日 HH:mm'),
         };

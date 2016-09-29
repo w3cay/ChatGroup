@@ -50,18 +50,21 @@ swig.setDefaults({
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
+app.set('trust proxy', 3);
+// 设置session失效时间
+var hour = 12*60*60*1000;
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { expires: new Date(Date.now() + hour) , maxAge: hour },
+}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'src')));
 
-app.set('trust proxy', 1);
-app.use(session({
-  secret: 'keyboard cat',
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: true }
-}));
+
 
 app.use('/', routes);
 app.use('/users', users);

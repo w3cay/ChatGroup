@@ -19,6 +19,7 @@ const router = new VueRouter();
 
 router.map({
   '/': {
+    name: 'chatMain',
     component: ChatMainView,
   },
   '/user/portal': {
