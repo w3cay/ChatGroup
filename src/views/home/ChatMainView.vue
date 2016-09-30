@@ -10,7 +10,7 @@
      <div class="mes-list" id="mes-list-box">
        <div v-for="item in timeline" class="mes-item">
          <div class="left">
-           <img class="avatar" src="http://oe3o9orp4.bkt.clouddn.com/avatar.jpg">
+           <img class="avatar" v-bind:src="item.avatar">
          </div>
          <div class="right">
            <div><span class="nickname">{{item.name }}</span> <span class="time">{{item.time}}</span></div>
@@ -20,7 +20,7 @@
      </div>
        <div class="chat-input">
          <div class="self-info">
-           <img class="avatar" src="http://oe3o9orp4.bkt.clouddn.com/avatar.jpg">
+           <img class="avatar" v-bind:src="user.avatar">
          </div>
          <textarea class="form-control" id="text-input" v-model="wordsValue" @keyup.enter="sendMessage"></textarea>
        </div>
@@ -159,7 +159,9 @@ import VueStrap from 'vue-strap';
 import Moment from 'moment';
 import Cookies from 'js-cookie';
 import ioClient from 'socket.io-client';
-const socket = ioClient('192.168.1.200:8080');
+import Config from '../../../config.js';
+
+const socket = ioClient(Config.socketIp);
 
 export default {
   data () {
@@ -168,18 +170,13 @@ export default {
       test: 'test',
       wordsValue: '',
       user: '',
-      timeline: [
-        {
-          name: 'Bright',
-          text: 'Hello ChatGroup',
-          time: Moment().format('Y年MM月DD日 HH:mm'),
-        },
-      ],
+      timeline: [],
     }
   },
   created() {
     socket.on('new message', (data) => {
       this.timeline.push(data);
+      this.scrollBottom();
     });
   },
   route: {
@@ -205,17 +202,21 @@ export default {
           name: this.user.username,
           text: this.wordsValue,
           time: Moment().format('Y年MM月DD日 HH:mm'),
+          avatar: this.user.avatar,
         };
         
         socket.emit('send message', mes);
         this.timeline.push(mes);
         this.wordsValue = '';
-        setTimeout(() => {
-          const mesListBox = document.querySelector('#mes-list-box');
-          mesListBox.scrollTop = mesListBox.scrollHeight;
-        }, 0);
+        this.scrollBottom();
       }
     },
+    scrollBottom() {
+      setTimeout(() => {
+        const mesListBox = document.querySelector('#mes-list-box');
+        mesListBox.scrollTop = mesListBox.scrollHeight;
+      }, 0);
+    }
   },
 }
 </script>

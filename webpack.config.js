@@ -13,9 +13,10 @@ var paths = {
     src: './src/',
     dist: './dist',
 };
-
+console.log(__dirname + "/");
 module.exports = {
     devtool: 'source-map',
+    context: __dirname + "/",
     entry:{ 'master': paths.src + 'views/home/master.js' },
     output: {
         path: paths.src + 'views/home/dist',

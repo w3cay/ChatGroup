@@ -10,12 +10,13 @@
       </div>
 
       <div class="input-box">
-        <input class="form-control" type="password" name="" placeholder="密码" v-model="loginForm.password" v-validate:password="{ minlength: 6 }">
+        <input class="form-control" type="password" name="" placeholder="密码" v-model="loginForm.password" v-validate:password="{ minlength: 6 }"  
+        @keyup.enter="loginSubmit" >
 
         <span v-show="$loginForm.password.minlength && hasLoginTouched" class="glyphicon glyphicon-remove"></span>
       </div>
 
-      <button class="btn btn-primary"  @click="loginSubmit">登录</button>
+      <button class="btn btn-primary" @click="loginSubmit">登录</button>
       <div class="error-container">
         <div v-if="loginErrorMessage" class="login-error alert alert-warning" role="alert">{{loginErrorMessage}}</div>
       </div>
@@ -43,7 +44,7 @@
       <span v-show="$signForm.passworda.minlength && hasSignTouched" class="glyphicon glyphicon-remove"></span>
     </div>
     <div class="input-box">
-      <input class="form-control" type="password" name="" placeholder="确认密码" v-model="signForm.passwordB">
+      <input class="form-control" type="password" name="" placeholder="确认密码" v-model="signForm.passwordB" @keyup.enter="signUpSubmit">
       <span v-show="signForm.passwordB !== signForm.passwordA  && hasSignTouched" class="glyphicon glyphicon-remove"></span>
     </div>  
       <button class="btn btn-primary"  @click="signUpSubmit">注册</button>

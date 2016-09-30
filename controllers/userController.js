@@ -1,4 +1,6 @@
+var Identicon = require('identicon.js');
 var crypto = require('crypto');
+var md5 = require('js-md5');
 var userModel = require('../models/userModel.js');
 
 /**
@@ -44,6 +46,7 @@ module.exports = {
                 _id: user._id,
                 mobile: user.mobile,
                 username: user.username,
+                avatar: user.avatar,
             };
             return res.json(resUser);
         });
@@ -55,22 +58,26 @@ module.exports = {
     create: function (req, res) {
 
         var user = new userModel({
-			uuid : req.body.uuid,
-			username : req.body.username,
-			mobile : req.body.mobile,
-			avatar : req.body.avatar,
-			sex : req.body.sex,
-			type : req.body.type,
-			brithday : req.body.brithday,
-			city : req.body.city,
-			district : req.body.district,
-			latitude : req.body.latitude,
-			longitude : req.body.longitude,
-			createdAt : req.body.createdAt,
-			updatedAt : req.body.updatedAt,
-			password : req.body.password,
-            salt : '',
+    			uuid : req.body.uuid,
+    			username : req.body.username,
+    			mobile : req.body.mobile,
+    			avatar : req.body.avatar,
+    			sex : req.body.sex,
+    			type : req.body.type,
+    			brithday : req.body.brithday,
+    			city : req.body.city,
+    			district : req.body.district,
+    			latitude : req.body.latitude,
+    			longitude : req.body.longitude,
+    			createdAt : req.body.createdAt,
+    			updatedAt : req.body.updatedAt,
+    			password : req.body.password,
+          salt : '',
         });
+        
+        
+        var imagedData =new Identicon(md5(user.username), 100).toString();
+        user.avatar = 'data:image/png;base64,'+ imagedData;
         // 创建salt
         crypto.randomBytes(32, function (err, salt) {
             if (err) { throw err;}

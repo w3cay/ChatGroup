@@ -1,3 +1,4 @@
+require('app-module-path').addPath(__dirname);
 var express = require('express');
 var server = require('./bin/www');
 var mongoose = require('mongoose');
@@ -19,6 +20,8 @@ var webpack = require('webpack'),
     webpackDevServer = require('webpack-dev-server'),
     webpackDevConfig = require('./webpack.config.js');
 var compiler = webpack(webpackDevConfig);
+
+global.__base = __dirname + '/';
 
 var app = express();
 var port = '8080';
