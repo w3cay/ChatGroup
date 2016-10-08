@@ -4,7 +4,14 @@
     </div>
     <div class="main">
      <div class="top-bar">
-       
+      <div class="left">
+        <img class="group-icon" v-bind:src="user.avatar">
+        <span>这是组标题</span>        
+      </div>
+      <div class="right">
+        <span>{{user.username}}</span>
+        <img class="avatar" v-bind:src="user.avatar">        
+      </div>
      </div>
      <div class="chat-room">
      <div class="mes-list" id="mes-list-box">
@@ -28,7 +35,6 @@
      <div class="right-bar"></div>
    </div>
   </div>
-
 </template>
 <style lang="sass">
     div.chat-box {
@@ -47,6 +53,12 @@
       float: left;
     }
 
+    .avatar {
+      width: 35px;
+      height: 35px;
+      cursor: pointer;
+    }
+
     .main {
       float: left;
       background: #fff;
@@ -62,7 +74,7 @@
 
         .mes-item {
           overflow: hidden;
-          padding: 10px;
+          padding: 10px 20px;
         }
 
         .mes-item > .left {
@@ -71,12 +83,6 @@
           margin-right: 10px;
           text-align: center;
           cursor: pointer;
-        }
-
-        .mes-item > .left .avatar {
-          width: 35px;
-          height: 35px;
-          border-radius: 50%;
         }
 
         .mes-item > .right {
@@ -141,6 +147,22 @@
         width: 100%;
         height: 75px;
         border: 1px solid #f0f0f0;
+        line-height: 75px;
+        font-size: 20px;
+        padding: 0 20px;
+        
+        .left {
+          display: inline-block;
+        }
+
+        .right {
+          display: inline-block;
+          float: right;
+        }
+
+        .group-icon {
+          width: 50px;
+        }
       }
 
       .right-bar {
@@ -155,14 +177,14 @@
 </style>
 
 <script>
-import VueStrap from 'vue-strap';
 import Moment from 'moment';
 import Cookies from 'js-cookie';
 import ioClient from 'socket.io-client';
+import { setUser } from '../../vuex/actions';
 import Config from '../../../config.js';
 
 const socket = ioClient(Config.socketIp);
-
+console.log(setUser)
 export default {
   data () {
     return {
@@ -172,6 +194,11 @@ export default {
       user: '',
       timeline: [],
     }
+  },
+  vuex: {
+    actions: {
+      setUser: setUser,
+    },
   },
   created() {
     socket.on('new message', (data) => {
@@ -188,6 +215,7 @@ export default {
           this.$http.get(`/users/${window.global.userId}`).then((res) => {
             if (res.status === 200) {
               console.log(res.body);
+              this.$dispatch('SETUSER', res.body);
               transition.next({user: res.body});
             }
           });  
