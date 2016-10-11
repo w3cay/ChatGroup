@@ -13,6 +13,7 @@ var swig = require('swig');
 var session = require('express-session')
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var protal = require('./routes/protal');
 var cars = require('./routes/cars');
 var webpack = require('webpack'),
     webpackDevMiddleware = require('webpack-dev-middleware'),
@@ -70,8 +71,9 @@ app.use(express.static(path.join(__dirname, 'src')));
 
 
 app.use('/', routes);
-app.use('/users', users);
-app.use('/cars', cars);
+app.use('/api/users', users);
+app.use('/api/protal', protal);
+app.use('/api/cars', cars);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

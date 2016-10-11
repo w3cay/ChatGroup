@@ -200,8 +200,15 @@ module.exports = {
                 }
 
             })
-            
-           
          });
     },
+    /*
+        用户登出
+    */
+    logout: function (req, res) {
+       req.session.destroy();
+       return res.status(200).json({
+           message: 'Clear'
+       });
+    }
 };

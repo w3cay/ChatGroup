@@ -25,13 +25,6 @@ router.post('/', function (req, res) {
 
 
 /*
- * POST
- */
-router.post('/login', function (req, res) {
-    userController.login(req, res);
-});
-
-/*
  * PUT
  */
 router.put('/:id', function (req, res) {

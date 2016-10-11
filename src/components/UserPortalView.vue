@@ -94,7 +94,7 @@ export default {
     signUpSubmit() {
       this.hasSignTouched = true;
       if (this.$signForm.valid) {
-        this.$http.post('/users',{
+        this.$http.post('api/users',{
           username: this.signForm.username,
           mobile: this.signForm.mobile,
           password: this.signForm.passwordB,
@@ -108,7 +108,7 @@ export default {
     loginSubmit() {
       this.hasLoginTouched = true;
       if (this.$loginForm.valid) {
-        this.$http.post('/users/login',{
+        this.$http.post('api/protal/login',{
           mobile: this.loginForm.mobile,
           password: this.loginForm.password,
         }).then((res) => {

@@ -8,10 +8,11 @@
         <img class="group-icon" v-bind:src="user.avatar">
         <span>这是组标题</span>        
       </div>
-      <div class="right">
+      <div class="right" @click="routeTo('profile')">
         <span>{{user.username}}</span>
-        <img class="avatar" v-bind:src="user.avatar">        
+        <img class="avatar" v-bind:src="user.avatar">
       </div>
+      <a href="" @click="logoutAction" >退出</a>
      </div>
      <div class="chat-room">
      <div class="mes-list" id="mes-list-box">
@@ -188,7 +189,7 @@ export default {
   data () {
     return {
       title: 'ChatGroup',
-      test: 'test',
+      test: store.state.user,
       wordsValue: '',
       user: '',
       timeline: [],
@@ -206,7 +207,7 @@ export default {
         this.$router.go({ name: 'portal', query: {action: 'login'}});
       } else {
         if (this.user === '') {
-          this.$http.get(`/users/${window.global.userId}`).then((res) => {
+          this.$http.get(`api/users/${window.global.userId}`).then((res) => {
             if (res.status === 200) {
               store.dispatch('setUserData', {user: res.body});
               transition.next({user: res.body});
@@ -217,6 +218,16 @@ export default {
     },
   },
   methods: {
+    routeTo(name) {
+      this.$router.go({name: name});
+    },
+    logoutAction() {
+      this.$http.get(`api/protal/logout`).then((res) => {
+        if (res.status === 200) {
+          this.$router.go({name: 'chatMain'});
+        }
+      });  
+    },
     sendMessage() {
       if (this.wordsValue !== '') {
         const mes = {
