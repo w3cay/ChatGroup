@@ -8,7 +8,7 @@ router.get('/', function(req, res, next) {
 		userId: req.session.userid,
 	};
 	console.log(data)
-	res.render('home/index', data);
+	res.render('index', data);
 });
 
 module.exports = router;

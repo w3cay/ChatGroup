@@ -1,8 +1,8 @@
-{% extends '../public/layout.html' %}
+{% extends './layout.html' %}
 {% block title %}{{title}}{% endblock %}
 {% block styles %}
 <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="views/home/dist/master.css">
+<link rel="stylesheet" type="text/css" href="dist/master.css">
 {% endblock %}
 {% block body %}
 {% raw %}
@@ -15,5 +15,5 @@
       userId: '{{userId}}',
     };
 </script>
-<script type="text/javascript" src="views/home/dist/master.js"></script>
+<script type="text/javascript" src="dist/master.js"></script>
 {% endblock %}

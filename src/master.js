@@ -3,15 +3,18 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import VueRouter from 'vue-router';
+import { sync } from 'vuex-router-sync';
 import VueValidator from 'vue-validator';
 import VueResource from 'vue-resource';
 
-import './index.html';
+
+import './views/index.html';
 import './master.scss';
-import App from './App.vue';
-import UserPortalView from './UserPortalView.vue';
-import ChatMainView from './ChatMainView.vue';
-import ProfileEditView from './ProfileEditView.vue';
+import App from './components/App.vue';
+import store from './store/index';
+import UserPortalView from './components/UserPortalView.vue';
+import ChatMainView from './components/ChatMainView.vue';
+import ProfileEditView from './components/ProfileEditView.vue';
 
 Vue.use(Vuex);
 Vue.use(VueRouter);
@@ -36,5 +39,5 @@ router.map({
   },
 });
 
+sync(store, router);
 router.start(App, '#app');
-

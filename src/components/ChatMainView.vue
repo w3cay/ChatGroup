@@ -180,11 +180,10 @@
 import Moment from 'moment';
 import Cookies from 'js-cookie';
 import ioClient from 'socket.io-client';
-import { setUser } from '../../vuex/actions';
-import Config from '../../../config.js';
+import store from '../store/index';
+import Config from '../../config.js';
 
 const socket = ioClient(Config.socketIp);
-console.log(setUser)
 export default {
   data () {
     return {
@@ -194,11 +193,6 @@ export default {
       user: '',
       timeline: [],
     }
-  },
-  vuex: {
-    actions: {
-      setUser: setUser,
-    },
   },
   created() {
     socket.on('new message', (data) => {
@@ -214,8 +208,7 @@ export default {
         if (this.user === '') {
           this.$http.get(`/users/${window.global.userId}`).then((res) => {
             if (res.status === 200) {
-              console.log(res.body);
-              this.$dispatch('SETUSER', res.body);
+              store.dispatch('setUserData', {user: res.body});
               transition.next({user: res.body});
             }
           });  

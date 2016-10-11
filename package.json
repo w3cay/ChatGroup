@@ -32,7 +32,8 @@
     "vue-router": "^0.7.13",
     "vue-strap": "^1.1.18",
     "vue-validator": "^2.1.7",
-    "vuex": "^2.0.0"
+    "vuex": "^2.0.0",
+    "vuex-router-sync": "^2.1.1"
   },
   "devDependencies": {
     "address": "^1.0.0",

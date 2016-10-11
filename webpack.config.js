@@ -17,10 +17,10 @@ console.log(__dirname + "/");
 module.exports = {
     devtool: 'source-map',
     context: __dirname + "/",
-    entry:{ 'master': paths.src + 'views/home/master.js' },
+    entry:{ 'master': paths.src + 'master.js' },
     output: {
-        path: paths.src + 'views/home/dist',
-        publicPath: publicPath + paths.src + 'views/home/dist',
+        path: paths.src + 'dist',
+        publicPath: publicPath + paths.src + 'dist',
         filename: '[name].js',
     },
     resolve: {

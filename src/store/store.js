@@ -9,13 +9,13 @@ const state = {
 };
 
 const mutations = {
-  SETUSER(state, user) {
-    console.log('get');
-    state.user = user;
-  },
+ INCREMENT (state) {
+    state.count++
+  }
 };
 
 export default new Vuex.Store({
   state,
   mutations,
 });
+
