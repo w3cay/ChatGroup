@@ -15,6 +15,7 @@ var paths = {
 };
 console.log(__dirname + "/");
 module.exports = {
+    debug: true,
     devtool: 'source-map',
     context: __dirname + "/",
     entry:{ 'master': paths.src + 'master.js' },

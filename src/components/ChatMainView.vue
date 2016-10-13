@@ -6,13 +6,15 @@
      <div class="top-bar">
       <div class="left">
         <img class="group-icon" v-bind:src="user.avatar">
-        <span>这是组标题</span>        
+        <span class="group-title">这是组标题</span>        
       </div>
-      <div class="right" @click="routeTo('profile')">
-        <span>{{user.username}}</span>
-        <img class="avatar" v-bind:src="user.avatar">
+      <div class="right" >
+        <img @click="routeTo('profile')" class="avatar" 
+        v-bind:src="user.avatar">
+        <span @click="routeTo('profile')">{{user.username}}</span>
+        <a href="" @click="logoutAction" >退出</a>
       </div>
-      <a href="" @click="logoutAction" >退出</a>
+      
      </div>
      <div class="chat-room">
      <div class="mes-list" id="mes-list-box">
@@ -33,7 +35,9 @@
          <textarea class="form-control" id="text-input" v-model="wordsValue" @keyup.enter="sendMessage"></textarea>
        </div>
      </div>
-     <div class="right-bar"></div>
+     <div class="right-bar">
+     <group-list></group-list>
+     </div>
    </div>
   </div>
 </template>
@@ -55,8 +59,8 @@
     }
 
     .avatar {
-      width: 35px;
-      height: 35px;
+      width: 30px;
+      height: 30px;
       cursor: pointer;
     }
 
@@ -70,12 +74,12 @@
       .chat-room {
         position: relative;
         border: 1px solid #f0f0f0;
-        height: calc(100% - 75px);
+        height: calc(100% - 50px);
         width: calc(100% - 350px);
 
         .mes-item {
           overflow: hidden;
-          padding: 10px 20px;
+          padding: 10px 10px;
         }
 
         .mes-item > .left {
@@ -129,9 +133,8 @@
         }
 
         .self-info > .avatar {
-          border-radius: 50%;
-          width: 35px;
-          height: 35px;
+          width: 30px;
+          height: 30px;
         }
 
         #text-input.form-control {
@@ -146,31 +149,38 @@
 
       .top-bar {
         width: 100%;
-        height: 75px;
+        height: 50px;
         border: 1px solid #f0f0f0;
-        line-height: 75px;
-        font-size: 20px;
-        padding: 0 20px;
+        line-height: 50px;
+        font-size: 14px;
+        padding: 0 10px;
         
         .left {
           display: inline-block;
         }
 
+
         .right {
           display: inline-block;
           float: right;
+          font-size: 14px;
         }
 
         .group-icon {
-          width: 50px;
+          width: 30px;
+        }
+
+        .group-title {
+          margin-left: 10px;
+          font-size: 16px;
         }
       }
 
       .right-bar {
         width: 350px;
-        height: calc(100% - 75px);
+        height: calc(100% - 50px);
         position: absolute;
-        top: 75px;
+        top: 50px;
         right: 0;
         border: 1px solid #f0f0f0;
       }
@@ -183,6 +193,7 @@ import Cookies from 'js-cookie';
 import ioClient from 'socket.io-client';
 import store from '../store/index';
 import Config from '../../config.js';
+import GroupList from './GroupListView.vue';
 
 const socket = ioClient(Config.socketIp);
 export default {
@@ -217,6 +228,7 @@ export default {
       }
     },
   },
+  components: { GroupList },
   methods: {
     routeTo(name) {
       this.$router.go({name: name});

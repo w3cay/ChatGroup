@@ -6,7 +6,6 @@ var config = require('./config.js');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
-var address = require('address');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var swig = require('swig');
