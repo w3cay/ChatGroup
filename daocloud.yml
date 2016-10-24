@@ -1,12 +1,23 @@
-image: node:4:
+version: 2.0
+test:
+    image:
+        node:4
 
-services:
-    - mongodb
+    services:
+        - mongodb
 
-env:
-    - MONGODB_INSTANCE_NAME = "test"
+    # using default docker-link env
+    env:
 
-install:
+    install:
 
-script:
-    - npm run start
+    before_script:
+        - npm install
+
+    script:
+        - npm run start
+  build:
+    image:
+        dockerfile_path: Dockerfile
+        build_dir: /
+        cache: false
