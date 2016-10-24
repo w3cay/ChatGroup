@@ -24,7 +24,7 @@ var compiler = webpack(webpackDevConfig);
 global.__base = __dirname + '/';
 
 var app = express();
-var port = '8080';
+var port = '80';
 // var io = require('socket.io')(server);
 
 var ioserver = require('http').Server(app);
