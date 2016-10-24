@@ -1,0 +1,6 @@
+on: "2.0"
+build:
+  image:
+    dockerfile_path: /chatgroup/Dockerfile
+    build_dir: /chatgroup
+    cache: true
