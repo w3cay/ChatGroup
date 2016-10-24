@@ -1,0 +1,23 @@
+[v-cloak] {
+  display: none;
+}
+
+html {
+  // /* background: url('http://ocqgx7uz0.bkt.clouddn.com/clouds-cloudy-summer-building-min.jpg') no-repeat; */
+  background-size: 100% 100%;
+  background-color: #fff;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  font-size: 14px;
+  color: #808184;
+}
+
+body,
+#app {
+  width: 100%;
+  min-width: 1200px;
+  height: 100%;
+}
+
+

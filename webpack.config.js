@@ -13,13 +13,15 @@ var paths = {
     src: './src/',
     dist: './dist',
 };
-
+console.log(__dirname + "/");
 module.exports = {
+    debug: true,
     devtool: 'source-map',
-    entry:{ 'master': paths.src + 'views/home/master.js' },
+    context: __dirname + "/",
+    entry:{ 'master': paths.src + 'master.js' },
     output: {
-        path: paths.src + 'views/home/dist',
-        publicPath: publicPath + paths.src + 'views/home/dist',
+        path: paths.src + 'dist',
+        publicPath: publicPath + paths.src + 'dist',
         filename: '[name].js',
     },
     resolve: {
@@ -68,6 +70,7 @@ module.exports = {
     },
     externals: {
         VueStrap: 'VueStrap',
+        io: 'io',
     },
     plugins: [
         new webpack.optimize.OccurenceOrderPlugin(),
@@ -84,7 +87,7 @@ module.exports = {
              // ./public directory is being served
              host: 'localhost',
              port: 2333,
-             proxy: 'http://localhost:3000/'
+             proxy: 'http://localhost:8080/'
            },      // plugin options
           {
             // prevent BrowserSync from reloading the page
