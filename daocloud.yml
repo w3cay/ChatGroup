@@ -17,7 +17,16 @@ test:
     script:
         - npm run start
   build:
-    image:
-        dockerfile_path: Dockerfile
-        build_dir: /
-        cache: false
+    lite_image:
+        compile:
+            dockerfile_path: Dockerfile
+            build_dir: /
+            cache: false
+
+        extract:
+            - /go/bin/app
+
+        package:
+              dockerfile_path: Dockerfile.sec
+              build_dir: /
+              cache: false
