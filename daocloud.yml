@@ -1,6 +1,13 @@
-on: "2.0"
-build:
-  image:
-    dockerfile_path: /chatgroup/Dockerfile
-    build_dir: /chatgroup
-    cache: true
+image: daocloud/ci-node:0.8
+
+services:
+    - mongodb
+
+env:
+    - MONGODB_INSTANCE_NAME = "test"
+
+install:
+
+script:
+    - npm install
+    - npm run start
