@@ -7,7 +7,7 @@ env:
     - MONGODB_INSTANCE_NAME = "test"
 
 install:
-    - yarn
+    - npm install yarn
 
 script:
     - yarn install
