@@ -10,12 +10,13 @@ test:
     env:
 
     install:
+        - yarn
 
     before_script:
-        - npm install
+        - yarn
 
     script:
-        - npm run start
+        - yarn start
   build:
     lite_image:
         compile:
