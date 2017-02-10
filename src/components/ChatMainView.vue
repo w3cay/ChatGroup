@@ -6,15 +6,15 @@
      <div class="top-bar">
       <div class="left">
         <img class="group-icon" v-bind:src="user.avatar">
-        <span class="group-title">这是组标题</span>        
+        <span class="group-title">这是组标题</span>
       </div>
       <div class="right" >
-        <img @click="routeTo('profile')" class="avatar" 
+        <img @click="routeTo('profile')" class="avatar"
         v-bind:src="user.avatar">
         <span @click="routeTo('profile')">{{user.username}}</span>
         <a href="" @click="logoutAction" >退出</a>
       </div>
-      
+
      </div>
      <div class="chat-room">
      <div class="mes-list" id="mes-list-box">
@@ -154,7 +154,7 @@
         line-height: 50px;
         font-size: 14px;
         padding: 0 10px;
-        
+
         .left {
           display: inline-block;
         }
@@ -194,8 +194,7 @@ import ioClient from 'socket.io-client';
 import store from '../store/index';
 import Config from '../../config.js';
 import GroupList from './GroupListView.vue';
-
-const socket = ioClient(Config.socketIp);
+const socket = ioClient(window.global.ws);
 export default {
   data () {
     return {
@@ -223,7 +222,7 @@ export default {
               store.dispatch('setUserData', {user: res.body});
               transition.next({user: res.body});
             }
-          });  
+          });
         }
       }
     },
@@ -238,7 +237,7 @@ export default {
         if (res.status === 200) {
           this.$router.go({name: 'chatMain'});
         }
-      });  
+      });
     },
     sendMessage() {
       if (this.wordsValue !== '') {
@@ -248,7 +247,7 @@ export default {
           time: Moment().format('Y年MM月DD日 HH:mm'),
           avatar: this.user.avatar,
         };
-        
+
         socket.emit('send message', mes);
         this.timeline.push(mes);
         this.wordsValue = '';

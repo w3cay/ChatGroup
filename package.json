@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "description": "my first socket.io app",
   "scripts": {
-    "start": "DEBUG=ChatGroup:* cross-env NODE_ENV=dev nodemon --debug -i src ./bin/www",
+    "dev": "DEBUG=ChatGroup:* cross-env NODE_ENV=dev nodemon --debug -i src ./bin/www",
+    "start": "nodemon -i src ./bin/www",
     "test": "webpack --watch"
   },
   "dependencies": {

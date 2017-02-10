@@ -24,24 +24,15 @@ var compiler = webpack(webpackDevConfig);
 global.__base = __dirname + '/';
 
 var app = express();
-var port = '80';
-// var io = require('socket.io')(server);
 
+var port = app.get('env') === 'dev' ? 8080 : 80;
+// var io = require('socket.io')(server);
+console.log(`server on http://localhost:${port}`);
+app.locals.ws = `http://127.0.0.1:${port}`;
 var ioserver = require('http').Server(app);
 ioserver.listen(port);
 var io = require('socket.io')(ioserver);
-// attach to the compiler & the server
-// app.use(webpackDevMiddleware(compiler, {
-//     // public path should be the same with webpack config
-//     publicPath: webpackDevConfig.output.publicPath,
-//     noInfo: true,
-//     stats: {
-//       colors: true
-//     }
-// }));
-// app.use(webpackHotMiddleware(compiler));
 
-// console.log(app.get('env'));
 // view engine setup
 app.set('views', path.join(__dirname, 'src/views'));
 app.engine('html', swig.renderFile);
@@ -55,7 +46,7 @@ swig.setDefaults({
 app.use(logger('dev'));
 app.set('trust proxy', 3);
 // 设置session失效时间
-var hour = 12*60*60*1000;
+var hour = 12 * 60 * 60 * 1000;
 app.use(session({
   secret: 'keyboard cat',
   resave: false,
@@ -85,7 +76,7 @@ app.use(function(req, res, next) {
 
 // development error handler
 // will print stacktrace
-if (app.get('env') === 'development') {
+if (app.get('env') === 'dev') {
   app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.render('error', {
@@ -107,7 +98,7 @@ app.use(function(err, req, res, next) {
 app.locals.title = "ChatGroup";
 
 function connect () {
-  // Mongoose: mpromise (mongoose's default promise library) is deprecated, plug in your own promise 
+  // Mongoose: mpromise (mongoose's default promise library) is deprecated, plug in your own promise
    // library instead: http://mongoosejs.com/docs/promises.html
   mongoose.Promise = global.Promise;
   var options = { server: { socketOptions: { keepAlive: 1 } } };
@@ -116,11 +107,11 @@ function connect () {
 
 connect()
   .on('error', function (err) {
-    console.log('Mongoose connection error: ' + err); 
+    console.log('Mongoose connection error: ' + err);
   })
   .on('disconnected', connect)
   .once('open', function () {
-    console.log('Mongoose connecting'); 
+    console.log('Mongoose connecting');
   });
 
 

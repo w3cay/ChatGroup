@@ -1,0 +1,13 @@
+deploy:
+  - provider: s3
+    ⋮ # rest of S3 deployment for MyApp.zip
+  - provider: codedeploy
+    access_key_id: $AWS_ACCESS_KEY_ID
+    secret_access_key: $AWS_SECRET_ACCESS_KEY
+    on: &2
+      repo: w3cay/chatgroup
+      branch: develop
+    bucket: "S3 Bucket"
+    key: latest.zip
+    application: Chatgroup
+    deployment_group: devlop
