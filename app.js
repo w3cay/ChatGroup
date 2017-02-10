@@ -25,7 +25,7 @@ global.__base = __dirname + '/';
 
 var app = express();
 
-var port = app.get('env') === 'dev' ? 8080 : 80;
+var port = app.get('env') === 'dev' ? 8080 : 8080;
 // var io = require('socket.io')(server);
 console.log(`server on http://localhost:${port}`);
 app.locals.ws = `http://127.0.0.1:${port}`;
